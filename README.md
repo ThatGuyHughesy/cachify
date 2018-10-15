@@ -35,7 +35,9 @@ Once you have your your application credentials, create `server/config/keys.js` 
 ```javascript
 module.exports = {
   spotifyClientID: "<CLIENT_ID_GOES_HERE>",
-  spotifyClientSecret: "<CLIENT_SECRET_GOES_HERE>"
+  spotifyClientSecret: "<CLIENT_SECRET_GOES_HERE>",
+  mongoUri: "<MONGO_URI_GOES_HERE>",
+  cookieKey: "<CLIENT_SECRET_GOES_HERE>"
 };
 ```
 
