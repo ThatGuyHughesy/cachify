@@ -1,44 +1,27 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const cookieSession = require("cookie-session");
 const passport = require("passport");
-const SpotifyStrategy = require("passport-spotify").Strategy;
 
 const keys = require("./config/keys");
 
 const app = express();
 
-passport.use(
-  new SpotifyStrategy(
-    {
-      clientID: keys.spotifyClientID,
-      clientSecret: keys.spotifyClientSecret,
-      callbackURL: "/auth/spotify/callback"
-    },
-    function(accessToken, refreshToken, expires_in, profile, done) {
-      // Create User
-    }
-  )
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey]
+  })
 );
 
-app.get(
-  "/auth/spotify",
-  passport.authenticate("spotify", {
-    scope: [
-      "user-read-email",
-      "playlist-read-private",
-      "playlist-modify-private",
-      "playlist-modify-public"
-    ]
-  }),
-  function(req, res) {}
-);
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get(
-  "/auth/spotify/callback",
-  passport.authenticate("spotify", { failureRedirect: "/login" }),
-  function(req, res) {
-    res.redirect("/");
-  }
-);
+mongoose.connect(keys.mongoUri);
+
+require("./models/User");
+require("./services/passport");
+require("./routes/authRoutes")(app);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT);
