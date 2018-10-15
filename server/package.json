@@ -1,0 +1,22 @@
+{
+  "name": "Cachify",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "Turn your Spotify playlist into a cache.",
+  "authors": [
+    "Conor Hughes <hello@conorhughes.me>"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "engines": {
+    "node": "8.11.3",
+    "npm": "5.6.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "passport": "^0.4.0",
+    "passport-spotify": "^1.0.1"
+  }
+}
