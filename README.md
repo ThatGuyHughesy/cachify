@@ -24,28 +24,28 @@ Once installed, clone the repository and install its dependencies running:
 
     $ npm install
 
-## Run
+## Development
 
-Go to [My Applications on Spotify Developer](https://developer.spotify.com/my-applications) and create your application. For local development, register this Redirect URI:
+Go to [My Applications on Spotify Developer](https://developer.spotify.com/my-applications) and create your application. Register this Redirect URI:
 
 - http://localhost:3000/auth/spotify/callback
 
-Once you have your your application credentials, create `server/config/keys.js` with the following:
+Once you have your your application credentials, create `server/config/dev.js` with the following:
 
 ```javascript
 module.exports = {
   spotifyClientID: "<CLIENT_ID_GOES_HERE>",
   spotifyClientSecret: "<CLIENT_SECRET_GOES_HERE>",
   mongoUri: "<MONGO_URI_GOES_HERE>",
-  cookieKey: "<CLIENT_SECRET_GOES_HERE>"
+  cookieKey: "<COOKIE_KEY_GOES_HERE>"
 };
 ```
 
 Then run:
 
-    $ npm start
+    $ npm run dev
 
-Then, open `http://localhost:3000` in a browser.
+Which will open `http://localhost:3000` in a browser.
 
 ## How It Works
 

@@ -1,0 +1,11 @@
+.playlists {
+  margin: 25px auto;
+}
+
+.playlists .list-group {
+  margin-top: 25px;
+}
+
+.playlist:hover {
+  cursor: pointer;
+}

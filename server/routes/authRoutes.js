@@ -16,18 +16,18 @@ module.exports = app => {
 
   app.get(
     "/auth/spotify/callback",
-    passport.authenticate("spotify", { failureRedirect: "/login" }),
+    passport.authenticate("spotify", { failureRedirect: "/" }),
     function(req, res) {
-      res.redirect("/");
+      res.redirect("/playlists");
     }
   );
 
   app.get("/api/current_user", (req, res) => {
-    req.logout();
     res.send(req.user);
   });
 
   app.get("/api/logout", (req, res) => {
+    req.logout();
     res.send(req.user);
   });
 };
