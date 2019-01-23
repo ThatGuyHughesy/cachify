@@ -1,0 +1,39 @@
+{
+  "name": "Cachify",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "Turn your Spotify playlist into a cache.",
+  "keywords": [
+    "spotify",
+    "playlist",
+    "cache",
+    "react",
+    "redux",
+    "webpack",
+    "sass",
+    "es6",
+    "node",
+    "mongo"
+  ],
+  "author": "Conor Hughes <hello@conorhughes.me>",
+  "license": "MIT",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThatGuyHughesy/cachify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ThatGuyHughesy/cachify/issues"
+  },
+  "homepage": "https://github.com/ThatGuyHughesy/cachify#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.4.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
