@@ -63,6 +63,7 @@ typings/
 # Configuration
 dev.js
 prod.js
+test.js 
 
 # OS files
 .DS_STORE

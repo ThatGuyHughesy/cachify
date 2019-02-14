@@ -1,16 +1,19 @@
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const express = require('express');
-const mongoose = require('mongoose');
 const passport = require('passport');
+const morgan = require('morgan');
 
-const keys = require('./config/keys');
+const keys = require('./config');
+const routes = require('./routes');
 
 const app = express();
 
+morgan('tiny');
+
 const PORT = process.env.PORT || 5000;
 
-const routes = require('./routes');
+require('./models');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -24,10 +27,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect(keys.mongoUri, { useNewUrlParser: true });
-
 require('./services/passport');
 
 app.use(routes);
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.info(`Server listening on port ${PORT}.`);
+});
