@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - '10.5'
+install:
+  - npm i -g npm@6.8.0
+  - npm install
+before_script:
+  - npm run lint
+script:
+  - npm run test

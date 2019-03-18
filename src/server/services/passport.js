@@ -2,9 +2,10 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 
-const keys = require('../config/keys');
 const User = require('../models/User');
 const Token = require('../models/Token');
+
+const keys = require('../config');
 
 mongoose.model('User');
 mongoose.model('Token');

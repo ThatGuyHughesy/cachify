@@ -2,6 +2,8 @@
 
 Turn your Spotify playlist into a cache.
 
+[![Build Status](https://travis-ci.org/ThatGuyHughesy/cachify.svg?branch=master)](https://travis-ci.org/ThatGuyHughesy/cachify)
+
 ### Who is this for?
 
 For people, who like me, have playlists with 100s of tracks in them... and growing!
@@ -13,6 +15,45 @@ Instead of your playlists growing out of control you can now set the max number 
 Currently the only cache implemented is FIFO (First In First Out).
 
 The hope is Spotify will eventually add a play count or last played to tracks in a playlist so a LRU (Least Recently Used) or LFU (Least Frequently Used) cache can be implemented.
+
+## Installation
+
+Requires NodeJS & NPM.
+
+Once installed, clone the repository and install its dependencies running:
+
+    $ npm install
+
+## Development
+
+Go to [My Applications on Spotify Developer](https://developer.spotify.com/my-applications) and create your application. Register this Redirect URI:
+
+- http://localhost:5000/auth/spotify/callback
+
+Once you have your your application credentials, create `config/dev.js` with the following:
+
+```javascript
+module.exports = {
+  spotifyClientID: '<CLIENT_ID_GOES_HERE>',
+  spotifyClientSecret: '<CLIENT_SECRET_GOES_HERE>',
+  mongoUri: '<MONGO_URI_GOES_HERE>',
+  cookieKey: '<COOKIE_KEY_GOES_HERE>'
+};
+```
+
+Then run:
+
+    $ npm run start
+
+## Testing
+
+For ESLint run:
+
+    $ npm run lint
+
+For Mocha tests run:
+
+    $ npm run test
 
 ## Contributing
 
