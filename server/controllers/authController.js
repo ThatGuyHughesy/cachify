@@ -12,7 +12,7 @@ module.exports = {
     })(req, res, next);
   },
   login(req, res, next) {
-    passport.authenticate('spotify', { successRedirect: '/playlists', failureRedirect: '/' })(
+    passport.authenticate('spotify', { successRedirect: '/api/playlists', failureRedirect: '/' })(
       req,
       res,
       next
