@@ -2,7 +2,7 @@ const Playlist = require('../models/Playlist');
 
 module.exports = {
   findAll: (req, res) => {
-    Playlist.find({ spotifyId: req.user.spotifyId })
+    Playlist.find({ spotifyId: req.user.spotifyId }, '-_id spotifyId playlistId cacheSize')
       .then(Playlists => res.json(Playlists))
       .catch(err => res.status(422).json(err));
   },

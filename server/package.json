@@ -21,7 +21,7 @@
     "start": "node index.js",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
-    "dev": "concurrently 'npm run server' 'npm run client'",
+    "dev": "NODE_ENV=development concurrently 'npm run server' 'npm run client'",
     "lint": "eslint --fix . --ext .js .",
     "test": "mocha --timeout 3000 ./**/*.test.js"
   },
@@ -35,8 +35,8 @@
   "homepage": "https://github.com/ThatGuyHughesy/cachify#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "cookie-session": "^1.3.3",
     "concurrently": "^4.1.0",
+    "cookie-session": "^1.3.3",
     "express": "^4.16.4",
     "mongoose": "^5.4.19",
     "morgan": "^1.9.1",
@@ -56,7 +56,7 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
     "istanbul": "^0.4.5",
-    "mocha": "^6.0.2",
+    "mocha": "^6.1.4",
     "prettier": "^1.16.4",
     "sinon": "^7.3.0",
     "supertest": "^4.0.2"
