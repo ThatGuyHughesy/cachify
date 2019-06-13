@@ -6,7 +6,7 @@ Turn your Spotify playlist into a cache.
 
 ### Who is this for?
 
-For people, who like me, have playlists with 100s of tracks in them... and growing!
+For people, who like me, have playlists with 100s of tracks in them (and growing!) but only listen to a small percentage of them.
 
 Instead of your playlists growing out of control you can now set the max number of tracks in a playlist so as you add new tracks, older tracks will be removed.
 
@@ -22,6 +22,7 @@ Requires NodeJS & NPM.
 
 Once installed, clone the repository and install its dependencies running:
 
+    $ cd server
     $ npm install
 
 ## Development
@@ -30,7 +31,7 @@ Go to [My Applications on Spotify Developer](https://developer.spotify.com/my-ap
 
 - http://localhost:5000/auth/spotify/callback
 
-Once you have your your application credentials, create `config/dev.js` with the following:
+Once you have your your application credentials, create `server/config/dev.js` with the following:
 
 ```javascript
 module.exports = {
@@ -43,7 +44,7 @@ module.exports = {
 
 Then run:
 
-    $ npm run start
+    $ npm run dev
 
 ## Testing
 

@@ -8,6 +8,6 @@ router.route('/spotify/callback').get(authController.login);
 
 router.route('/user').get(authController.user);
 
-router.route('/logout').post(authController.logout);
+router.route('/logout').get(authController.logout);
 
 module.exports = router;

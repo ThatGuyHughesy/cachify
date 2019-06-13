@@ -1,0 +1,8 @@
+.playlist-image {
+  height: 80px;
+  width: 80px;
+}
+
+.playlist-details {
+  display: inline-block;
+}
