@@ -9,11 +9,8 @@ const playlistSchema = new Schema({
   },
   playlistId: {
     type: String,
-    required: true
-  },
-  imageUrl: {
-    type: String,
-    required: true
+    required: true,
+    index: { unique: true }
   },
   cacheSize: {
     type: Number,

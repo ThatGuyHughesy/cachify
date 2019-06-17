@@ -10,7 +10,6 @@ describe('Playlist', () => {
     playlist.validate(err => {
       expect(err.errors.spotifyId).to.exist;
       expect(err.errors.playlistId).to.exist;
-      expect(err.errors.imageUrl).to.exist;
       expect(err.errors.cacheSize).to.exist;
       done();
     });
@@ -21,7 +20,6 @@ describe('Playlist', () => {
 
     playlist.spotifyId = 'thatguyhughesy';
     playlist.playlistId = '73ShhRy2x6AQZYaT8eNqHq';
-    playlist.imageUrl = 'https://mosaic.scdn.co/640/fe6d0393d8f8e6551edbfcdea1a4af3';
     playlist.cacheSize = 100;
 
     playlist.validate(err => {
