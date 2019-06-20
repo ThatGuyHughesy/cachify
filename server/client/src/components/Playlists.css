@@ -1,8 +1,12 @@
-.playlist-image {
-  height: 80px;
-  width: 80px;
+.option-playlist-img {
+  height: 32px;
+  width: 32px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
 }
 
-.playlist-details {
-  display: inline-block;
+.option-playlist-name {
+  margin-left: 8px;
+  text-overflow: ellipsis;
 }

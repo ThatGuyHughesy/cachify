@@ -12,7 +12,10 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   create: (req, res) => {
-    Playlist.create(req.body)
+    const { spotifyId } = req.user;
+    const { playlistId, cacheSize } = req.body;
+
+    Playlist.create({ spotifyId, playlistId, cacheSize })
       .then(newPlaylist => res.json(newPlaylist))
       .catch(err => res.status(422).json(err));
   },

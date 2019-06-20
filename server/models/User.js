@@ -5,7 +5,8 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
   spotifyId: {
     type: String,
-    required: true
+    required: true,
+    index: { unique: true }
   }
 });
 

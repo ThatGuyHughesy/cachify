@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Media from 'react-bootstrap/Media';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Image from 'react-bootstrap/Image';
 
 export default function Playlist({ image, title, tracks }) {
   return (
-    <div className="playlist">
-      <div className="playlist-inner">
-        <img className="playlist-image" alt="artist" src={image} />
-        <div className="playlist-details">
-          <div className="playlist-title">{title}</div>
-          <div className="playlist-subtitle">
+    <ListGroup.Item>
+      <Media>
+        <Image src={image} style={{ height: '70px', width: '70px' }} rounded />
+        <Media.Body className="ml-4">
+          <h5>{title}</h5>
+          <p>
             {tracks}
             &nbsp;tracks
-          </div>
-        </div>
-      </div>
-    </div>
+          </p>
+        </Media.Body>
+      </Media>
+    </ListGroup.Item>
   );
 }
 

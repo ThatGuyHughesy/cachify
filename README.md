@@ -31,7 +31,7 @@ Go to [My Applications on Spotify Developer](https://developer.spotify.com/my-ap
 
 - http://localhost:5000/auth/spotify/callback
 
-Once you have your your application credentials, create `server/config/dev.js` with the following:
+Once you have your your application credentials, create `config/dev.js` with the following:
 
 ```javascript
 module.exports = {

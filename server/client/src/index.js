@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker';
 import App from './components/App';
 import reducers from './reducers';
 
+import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
