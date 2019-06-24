@@ -19,7 +19,6 @@ module.exports = {
         spotify
           .refreshAccessToken(spotifyApi, token)
           .then(newToken => {
-            console.log(newToken);
             spotifyApi.setAccessToken(newToken.accessToken);
           })
           .catch(() => {

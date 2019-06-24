@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -81,8 +82,12 @@ class Playlists extends Component {
   }
 
   render() {
-    const { spotifyPlaylists } = this.props;
+    const { auth, spotifyPlaylists } = this.props;
     const { selectedPlaylist, cacheSize } = this.state;
+
+    if (auth === false) {
+      return <Redirect to={{ pathname: '/' }} />;
+    }
 
     return (
       <Container>
@@ -160,6 +165,7 @@ class Playlists extends Component {
 }
 
 Playlists.propTypes = {
+  auth: PropTypes.oneOfType([() => null, PropTypes.shape({ spotifyId: PropTypes.string })]),
   fetchPlaylists: PropTypes.func.isRequired,
   fetchSpotifyPlaylists: PropTypes.func.isRequired,
   submitPlaylist: PropTypes.func.isRequired,
@@ -181,6 +187,7 @@ Playlists.propTypes = {
 };
 
 Playlists.defaultProps = {
+  auth: null,
   playlists: [],
   spotifyPlaylists: []
 };
