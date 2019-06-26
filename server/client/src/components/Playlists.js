@@ -9,6 +9,7 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import _ from 'lodash';
@@ -22,13 +23,19 @@ class Playlists extends Component {
     super(props);
 
     this.selectPlaylist = this.selectPlaylist.bind(this);
-    this.selectcacheSize = this.selectcacheSize.bind(this);
+    this.selectCacheSize = this.selectCacheSize.bind(this);
+    this.updateCacheSize = this.updateCacheSize.bind(this);
+    this.updatePlaylist = this.updatePlaylist.bind(this);
     this.submitPlaylist = this.submitPlaylist.bind(this);
-    this.submitPlaylist = this.submitPlaylist.bind(this);
+    this.removePlaylist = this.removePlaylist.bind(this);
+    this.showPlaylistModal = this.showPlaylistModal.bind(this);
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
 
     this.state = {
-      selectedPlaylist: null,
-      cacheSize: { value: 10, label: '10 Tracks' }
+      show: false,
+      update: { title: null, playlist: null, cacheSize: 10 },
+      create: { playlist: null, cacheSize: 10 }
     };
   }
 
@@ -39,26 +46,77 @@ class Playlists extends Component {
     fetchSpotifyPlaylists();
   }
 
-  selectPlaylist(event) {
-    this.setState({ selectedPlaylist: event });
+  handleClose() {
+    this.setState({ show: false });
   }
 
-  selectcacheSize(event) {
-    this.setState({ cacheSize: event });
+  handleShow() {
+    this.setState({ show: true });
+  }
+
+  selectPlaylist(event) {
+    const { create } = this.state;
+    create.playlist = event.value;
+    this.setState({ create });
+  }
+
+  selectCacheSize(event) {
+    const { create } = this.state;
+    create.cacheSize = event.value;
+    this.setState({ create });
+  }
+
+  updateCacheSize(event) {
+    const { update } = this.state;
+    update.cacheSize = event.value;
+    this.setState({ update });
+  }
+
+  showPlaylistModal(title, playlist, cacheSize) {
+    this.setState({ update: { title, playlist, cacheSize } });
+    this.handleShow();
+  }
+
+  removePlaylist(event, id) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const { removePlaylist } = this.props;
+
+    if (id) {
+      removePlaylist(id);
+    }
+  }
+
+  updatePlaylist(event) {
+    event.preventDefault();
+
+    const { updatePlaylist } = this.props;
+    const { update } = this.state;
+
+    if (update.playlist && update.cacheSize) {
+      updatePlaylist({
+        playlistId: update.playlist,
+        cacheSize: update.cacheSize
+      }).then(() => {
+        this.setState({ update: { playlist: null, cacheSize: 10 } });
+        this.handleClose();
+      });
+    }
   }
 
   submitPlaylist(event) {
     event.preventDefault();
 
-    const { submitPlaylist } = this.props;
-    const { selectedPlaylist, cacheSize } = this.state;
+    const { createPlaylist } = this.props;
+    const { create } = this.state;
 
-    if (selectedPlaylist && cacheSize) {
-      submitPlaylist({
-        playlistId: selectedPlaylist.value,
-        cacheSize: cacheSize.value
+    if (create.playlist && create.cacheSize) {
+      createPlaylist({
+        playlistId: create.playlist,
+        cacheSize: create.cacheSize
       }).then(() => {
-        this.setState({ selectedPlaylist: null });
+        this.setState({ create: { playlist: null, cacheSize: 10 } });
       });
     }
   }
@@ -72,8 +130,10 @@ class Playlists extends Component {
             key={playlist.id}
             id={playlist.id}
             title={playlist.name}
-            tracks={playlist.cacheSize}
+            cacheSize={playlist.cacheSize}
             image={playlist.imageUrl}
+            showPlaylist={this.showPlaylistModal}
+            removePlaylist={this.removePlaylist}
           />
         );
       });
@@ -82,8 +142,8 @@ class Playlists extends Component {
   }
 
   render() {
-    const { auth, spotifyPlaylists } = this.props;
-    const { selectedPlaylist, cacheSize } = this.state;
+    const { auth, spotifyPlaylists, cacheSizeOptions } = this.props;
+    const { show, update, create } = this.state;
 
     if (auth === false) {
       return <Redirect to={{ pathname: '/' }} />;
@@ -105,7 +165,6 @@ class Playlists extends Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-
         <Card>
           <Card.Body>
             <Card.Title>Add Playlist</Card.Title>
@@ -114,7 +173,7 @@ class Playlists extends Component {
                 <Col>
                   <Form.Group className="mb-0">
                     <Select
-                      value={selectedPlaylist}
+                      value={spotifyPlaylists.find(option => option.value === create.playlist)}
                       onChange={this.selectPlaylist}
                       options={spotifyPlaylists.map(playlist => ({
                         value: playlist.id,
@@ -135,14 +194,9 @@ class Playlists extends Component {
                 <Col md="3">
                   <Form.Group className="mb-0">
                     <Select
-                      value={cacheSize}
-                      onChange={this.selectcacheSize}
-                      options={[
-                        { value: 10, label: '10 Tracks' },
-                        { value: 25, label: '25 Tracks' },
-                        { value: 50, label: '50 Tracks' },
-                        { value: 100, label: '100 Tracks' }
-                      ]}
+                      value={cacheSizeOptions.find(option => option.value === create.cacheSize)}
+                      onChange={this.selectCacheSize}
+                      options={cacheSizeOptions}
                     />
                   </Form.Group>
                 </Col>
@@ -155,10 +209,37 @@ class Playlists extends Component {
             </Form>
           </Card.Body>
         </Card>
-        <Card className="my-4">
+        <Card className="my-4" style={{ zIndex: 0 }}>
           <Card.Header>Playlists</Card.Header>
           <ListGroup variant="flush">{this.renderPlaylists()}</ListGroup>
         </Card>
+        <Modal show={show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>update Playlist</Modal.Title>
+          </Modal.Header>
+          <Form onSubmit={this.updatePlaylist}>
+            <Modal.Body>
+              <Form.Group>
+                <h6>{update.title}</h6>
+              </Form.Group>
+              <Form.Group className="mb-0">
+                <Select
+                  value={cacheSizeOptions.find(option => option.value === update.cacheSize)}
+                  onChange={this.updateCacheSize}
+                  options={cacheSizeOptions}
+                />
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" type="submit">
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal>
       </Container>
     );
   }
@@ -168,7 +249,9 @@ Playlists.propTypes = {
   auth: PropTypes.oneOfType([() => null, PropTypes.shape({ spotifyId: PropTypes.string })]),
   fetchPlaylists: PropTypes.func.isRequired,
   fetchSpotifyPlaylists: PropTypes.func.isRequired,
-  submitPlaylist: PropTypes.func.isRequired,
+  createPlaylist: PropTypes.func.isRequired,
+  updatePlaylist: PropTypes.func.isRequired,
+  removePlaylist: PropTypes.func.isRequired,
   playlists: PropTypes.arrayOf(
     PropTypes.shape({
       spotifyId: PropTypes.string.isRequired,
@@ -183,13 +266,25 @@ Playlists.propTypes = {
       imageUrl: PropTypes.string.isRequired,
       tracks: PropTypes.number.isRequired
     })
+  ),
+  cacheSizeOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired
+    })
   )
 };
 
 Playlists.defaultProps = {
   auth: null,
   playlists: [],
-  spotifyPlaylists: []
+  spotifyPlaylists: [],
+  cacheSizeOptions: [
+    { value: 10, label: '10 Tracks' },
+    { value: 25, label: '25 Tracks' },
+    { value: 50, label: '50 Tracks' },
+    { value: 100, label: '100 Tracks' }
+  ]
 };
 
 function mapStateToProps(state) {

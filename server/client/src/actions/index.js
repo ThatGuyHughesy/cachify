@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_PLAYLISTS, SUBMIT_PLAYLIST, FETCH_SPOTIFY_PLAYLISTS } from './types';
+import {
+  FETCH_USER,
+  FETCH_PLAYLISTS,
+  CREATE_PLAYLIST,
+  UPDATE_PLAYLIST,
+  REMOVE_PLAYLIST,
+  FETCH_SPOTIFY_PLAYLISTS
+} from './types';
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/auth/user');
@@ -13,10 +20,22 @@ export const fetchPlaylists = () => async dispatch => {
   dispatch({ type: FETCH_PLAYLISTS, payload: res.data });
 };
 
-export const submitPlaylist = values => async dispatch => {
-  const res = await axios.post('/api/playlists', values);
+export const createPlaylist = playlist => async dispatch => {
+  const res = await axios.post('/api/playlists', playlist);
 
-  dispatch({ type: SUBMIT_PLAYLIST, payload: res.data });
+  dispatch({ type: CREATE_PLAYLIST, payload: res.data });
+};
+
+export const updatePlaylist = playlist => async dispatch => {
+  const res = await axios.put(`/api/playlists/${playlist.playlistId}`, playlist);
+
+  dispatch({ type: UPDATE_PLAYLIST, payload: res.data });
+};
+
+export const removePlaylist = playlist => async dispatch => {
+  const res = await axios.delete(`/api/playlists/${playlist}`);
+
+  dispatch({ type: REMOVE_PLAYLIST, payload: res.data });
 };
 
 export const fetchSpotifyPlaylists = () => async dispatch => {
