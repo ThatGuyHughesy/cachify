@@ -7,16 +7,14 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import _ from 'lodash';
 import * as actions from '../actions';
 
+import Header from './Header';
 import Playlist from './Playlist';
-import './Playlists.css';
 
 class Playlists extends Component {
   constructor(props) {
@@ -151,20 +149,7 @@ class Playlists extends Component {
 
     return (
       <Container>
-        <Navbar bg="white" expand="lg" className="px-0">
-          <Navbar.Brand href="/" className="font-weight-bold">
-            Cachify
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse>
-            <Nav className="mr-auto" />
-            <Nav>
-              <Nav.Link href="/auth/logout" rel="noopener noreferrer">
-                Logout
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
+        <Header auth={auth} route="/playlists" light={false} />
         <Card>
           <Card.Body>
             <Card.Title>Add Playlist</Card.Title>
@@ -180,7 +165,7 @@ class Playlists extends Component {
                         label: (
                           <div className="option-playlist">
                             <img
-                              className="option-playlist-img"
+                              className="option-playlist-img mr-2"
                               src={playlist.imageUrl}
                               alt="playlist"
                             />
@@ -211,16 +196,20 @@ class Playlists extends Component {
         </Card>
         <Card className="my-4" style={{ zIndex: 0 }}>
           <Card.Header>Playlists</Card.Header>
-          <ListGroup variant="flush">{this.renderPlaylists()}</ListGroup>
+          <Card.Body className="p-0">
+            <ListGroup className="playlists" variant="flush">
+              {this.renderPlaylists()}
+            </ListGroup>
+          </Card.Body>
         </Card>
         <Modal show={show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>update Playlist</Modal.Title>
+            <Modal.Title>Update Playlist</Modal.Title>
           </Modal.Header>
           <Form onSubmit={this.updatePlaylist}>
             <Modal.Body>
               <Form.Group>
-                <h6>{update.title}</h6>
+                <h5>{update.title}</h5>
               </Form.Group>
               <Form.Group className="mb-0">
                 <Select
