@@ -16,16 +16,17 @@ export default function Playlist({ id, image, title, cacheSize, showPlaylist, re
             &nbsp;tracks
           </p>
         </Media.Body>
-        <button
-          type="submit"
+        <a
+          href="#removePlaylist"
           className="close"
           onClick={e => {
+            e.preventDefault();
             removePlaylist(e, id);
           }}
         >
           <span aria-hidden="true">×</span>
           <span className="sr-only">Delete</span>
-        </button>
+        </a>
       </Media>
     </ListGroup.Item>
   );

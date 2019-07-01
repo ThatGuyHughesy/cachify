@@ -5,7 +5,8 @@ import {
   CREATE_PLAYLIST,
   UPDATE_PLAYLIST,
   REMOVE_PLAYLIST,
-  FETCH_SPOTIFY_PLAYLISTS
+  FETCH_SPOTIFY_PLAYLISTS,
+  FETCH_TRACKS
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -42,4 +43,10 @@ export const fetchSpotifyPlaylists = () => async dispatch => {
   const res = await axios.get('/api/spotify/playlists');
 
   dispatch({ type: FETCH_SPOTIFY_PLAYLISTS, payload: res.data });
+};
+
+export const fetchTracks = () => async dispatch => {
+  const res = await axios.get('/api/tracks');
+
+  dispatch({ type: FETCH_TRACKS, payload: res.data });
 };
