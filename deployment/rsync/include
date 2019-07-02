@@ -1,0 +1,14 @@
+client/public/
+client/src/
+client/package-lock.json
+client/package.json
+config/
+controllers/
+jobs/
+middlewares/
+models/
+routes/
+services/
+index.js
+package-lock.json
+package.json
