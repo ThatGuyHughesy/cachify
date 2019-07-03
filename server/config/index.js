@@ -13,5 +13,5 @@ switch (process.env.NODE_ENV) {
     module.exports = test;
     break;
   default:
-    module.exports = dev;
+    module.exports = prod;
 }

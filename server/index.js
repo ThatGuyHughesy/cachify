@@ -31,6 +31,6 @@ require('./services/passport');
 
 app.use(routes);
 
-app.listen(PORT, () => {
-  console.info(`Server listening on port ${PORT}.`);
+app.listen(PORT, 'localhost', () => {
+  console.log(`Server listening on port ${PORT}.`);
 });

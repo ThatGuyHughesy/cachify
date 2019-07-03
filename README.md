@@ -35,8 +35,9 @@ Once you have your your application credentials, create `config/dev.js` with the
 
 ```javascript
 module.exports = {
-  spotifyClientID: '<CLIENT_ID_GOES_HERE>',
-  spotifyClientSecret: '<CLIENT_SECRET_GOES_HERE>',
+  spotifyClientID: '<SPOTIFY_CLIENT_ID_GOES_HERE>',
+  spotifyClientSecret: '<SPOTIFY_CLIENT_SECRET_GOES_HERE>',
+  spotifyRedirectURI: '<SPOTIFY_REDIRECT_URI_GOES_HERE>',
   mongoUri: '<MONGO_URI_GOES_HERE>',
   cookieKey: '<COOKIE_KEY_GOES_HERE>'
 };
@@ -55,6 +56,20 @@ For ESLint run:
 For Mocha tests run:
 
     $ npm run test
+
+## Build
+
+To build the client:
+
+    $ cd client
+    $ npm run build
+
+## Deployment
+
+To deploy Cachify:
+
+    $ cd deployment
+    $ bash deploy.sh
 
 ## Contributing
 

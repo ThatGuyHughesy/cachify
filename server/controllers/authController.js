@@ -19,7 +19,7 @@ module.exports = {
     );
   },
   user(req, res) {
-    res.send(req.user);
+    res.send(req.user || false);
   },
   logout(req, res) {
     req.logout();
