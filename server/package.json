@@ -38,6 +38,7 @@
     "concurrently": "^4.1.0",
     "cookie-session": "^1.3.3",
     "express": "^4.16.4",
+    "lodash": "^4.17.14",
     "mongoose": "^5.4.19",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.10",
