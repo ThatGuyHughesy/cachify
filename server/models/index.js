@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const keys = require('../config');
 
-mongoose.connect(keys.mongoUri, { useNewUrlParser: true });
+mongoose.connect(keys.mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set('useCreateIndex', true);
 
 mongoose.connection.on('connected', () => {
