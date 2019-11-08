@@ -5,7 +5,9 @@ const SpotifyStrategy = require('passport-spotify').Strategy;
 const User = require('../models/User');
 const Token = require('../models/Token');
 
-const keys = require('../config');
+const clientID = process.env.SPOTIFY_CLIENT_ID;
+const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+const callbackURL = process.env.SPOTIFY_REDIRECT_URI;
 
 mongoose.model('User');
 mongoose.model('Token');
@@ -23,9 +25,9 @@ passport.deserializeUser((id, done) => {
 passport.use(
   new SpotifyStrategy(
     {
-      clientID: keys.spotifyClientID,
-      clientSecret: keys.spotifyClientSecret,
-      callbackURL: keys.spotifyRedirectURI
+      clientID,
+      clientSecret,
+      callbackURL
     },
     async (accessToken, refreshToken, expires_in, profile, done) => {
       const existingUser = await User.findOne({ spotifyId: profile.id });

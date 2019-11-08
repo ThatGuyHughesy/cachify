@@ -3,13 +3,14 @@ const spotify = require('../services/spotify');
 
 const Token = require('../models/Token');
 
-const keys = require('../config');
+const clientID = process.env.SPOTIFY_CLIENT_ID;
+const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 module.exports = {
   findAll: (req, res) => {
     const spotifyApi = new SpotifyWebApi({
-      clientId: keys.spotifyClientID,
-      clientSecret: keys.spotifyClientSecret
+      clientID,
+      clientSecret
     });
 
     Token.findOne({ spotifyId: req.user.spotifyId }).then(token => {
