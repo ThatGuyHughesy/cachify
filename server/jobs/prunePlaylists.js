@@ -4,9 +4,12 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const mongoose = require('mongoose');
 
 const spotify = require('../services/spotify');
-const keys = require('../config');
 
-mongoose.connect(keys.mongoUri, { useNewUrlParser: true });
+const clientID = process.env.SPOTIFY_CLIENT_ID;
+const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+const mongoUri = process.env.MONGO_URI;
+
+mongoose.connect(mongoUri, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
 const User = require('../models/User');
@@ -33,8 +36,8 @@ async function prunePlaylists() {
       console.log(`Pruning playlists for user ${user.spotifyId}`);
       const token = await Token.findOne({ spotifyId: user.spotifyId });
       const spotifyApi = new SpotifyWebApi({
-        clientId: keys.spotifyClientID,
-        clientSecret: keys.spotifyClientSecret
+        clientID,
+        clientSecret
       });
 
       spotifyApi.setAccessToken(token.accessToken);

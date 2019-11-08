@@ -1,10 +1,12 @@
+require('dotenv').config();
+
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const express = require('express');
 const passport = require('passport');
 const morgan = require('morgan');
 
-const keys = require('./config');
+const cookieKey = process.env.COOKIE_KEY;
 const routes = require('./routes');
 
 const app = express();
@@ -20,7 +22,7 @@ app.use(bodyParser.json());
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [keys.cookieKey]
+    keys: [cookieKey]
   })
 );
 
