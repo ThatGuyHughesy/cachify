@@ -13,6 +13,8 @@ import reducers from './reducers';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 
+require('dotenv').config();
+
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
