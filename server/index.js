@@ -7,13 +7,13 @@ const passport = require('passport');
 const morgan = require('morgan');
 
 const cookieKey = process.env.COOKIE_KEY;
+const serverIp = process.env.IP || 'localhost';
+const serverPort = process.env.PORT || 5000;
 const routes = require('./routes');
 
 const app = express();
 
 morgan('tiny');
-
-const PORT = process.env.PORT || 5000;
 
 require('./models');
 
@@ -33,6 +33,6 @@ require('./services/passport');
 
 app.use(routes);
 
-app.listen(PORT, 'localhost', () => {
-  console.log(`Server listening on port ${PORT}.`);
+app.listen(serverPort, serverIp, () => {
+  console.log(`Server listening on ${serverIp}:${serverPort}.`);
 });
