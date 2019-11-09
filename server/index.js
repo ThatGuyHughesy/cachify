@@ -5,6 +5,7 @@ const cookieSession = require('cookie-session');
 const express = require('express');
 const passport = require('passport');
 const morgan = require('morgan');
+const path = require('path');
 
 const cookieKey = process.env.COOKIE_KEY;
 const serverIp = process.env.IP || 'localhost';
@@ -32,6 +33,13 @@ app.use(passport.session());
 require('./services/passport');
 
 app.use(routes);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(`${__dirname}/client/build/index.html`));
+  });
+}
 
 app.listen(serverPort, serverIp, () => {
   console.log(`Server listening on ${serverIp}:${serverPort}.`);

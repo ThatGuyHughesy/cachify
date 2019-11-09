@@ -47,9 +47,7 @@ passport.use(
         expiresIn: expires_in * 1000 + Date.now()
       }).save();
 
-      done(null, token);
-
-      return done(null, user);
+      return done(null, user, token);
     }
   )
 );

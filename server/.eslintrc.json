@@ -5,6 +5,12 @@
     "camelcase": 0,
     "no-console": 0,
     "no-unused-expressions": "off",
-    "no-multiple-empty-lines": ["error", { "max": 1 }]
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-global-assign": [
+      "error",
+      {
+        "exceptions": ["__dirname"]
+      }
+    ]
   }
 }
