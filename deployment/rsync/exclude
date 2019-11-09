@@ -1,5 +1,0 @@
-.DS_STORE
-.eslintignore
-.eslintrc.json
-node_modules/
-*.test.js

@@ -19,8 +19,8 @@ module.exports = {
       if (token.expiresIn < Date.now()) {
         spotify
           .refreshAccessToken(spotifyApi, token)
-          .then(newToken => {
-            spotifyApi.setAccessToken(newToken.accessToken);
+          .then(newAccessToken => {
+            spotifyApi.setAccessToken(newAccessToken);
           })
           .catch(() => {
             req.logout();
@@ -30,15 +30,19 @@ module.exports = {
         spotifyApi.setAccessToken(token.accessToken);
       }
 
-      spotify.getUserPlaylists(spotifyApi, req.user.spotifyId).then(userPlaylists => {
-        const playlists = userPlaylists.map(playlist => ({
-          id: playlist.id,
-          name: playlist.name,
-          imageUrl: playlist.images[0].url,
-          tracks: playlist.tracks.total
-        }));
-        res.send(playlists);
-      });
+      if (spotifyApi.getAccessToken()) {
+        spotify.getUserPlaylists(spotifyApi, req.user.spotifyId).then(userPlaylists => {
+          const playlists = userPlaylists.map(playlist => ({
+            id: playlist.id,
+            name: playlist.name,
+            imageUrl: playlist.images[0].url,
+            tracks: playlist.tracks.total
+          }));
+          res.send(playlists);
+        });
+      } else {
+        res.send([]);
+      }
     });
   }
 };

@@ -22,8 +22,9 @@ const refreshAccessToken = async (spotifyApi, token) => {
         const newToken = token;
         newToken.accessToken = data.body.access_token;
         newToken.expiresIn = data.body.expires_in * 1000 + Date.now();
+        newToken.save();
 
-        return newToken.save();
+        return newToken.accessToken;
       },
       err => {
         console.log('Could not refresh access token.', err);
