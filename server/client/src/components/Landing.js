@@ -57,7 +57,7 @@ class Landing extends Component {
 
     nextTrack += 1;
 
-    if (nextTrack === 11) {
+    if (nextTrack === tracks.length) {
       nextTrack = 0;
     }
 

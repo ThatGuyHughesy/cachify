@@ -1,7 +1,7 @@
 const passport = require('passport');
 
-const successRedirect = process.env.LOGIN_SUCCESS_REDIRECT_URI;
-const failureRedirect = process.env.LOGIN_FAILURE_REDIRECT_URI;
+const successRedirect = process.env.LOGIN_SUCCESS_REDIRECT_URI || 'http://localhost:3000/playlists';
+const failureRedirect = process.env.LOGIN_FAILURE_REDIRECT_URI || 'http://localhost:3000/';
 
 module.exports = {
   signup(req, res, next) {

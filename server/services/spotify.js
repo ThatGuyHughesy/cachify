@@ -17,24 +17,19 @@ const getUserPlaylists = async (spotifyApi, userId) => {
 
 const refreshAccessToken = async (spotifyApi, token) => {
   try {
-    await spotifyApi.refreshAccessToken().then(
-      data => {
-        const newToken = token;
-        newToken.accessToken = data.body.access_token;
-        newToken.expiresIn = data.body.expires_in * 1000 + Date.now();
-        newToken.save();
+    const newToken = token;
+    const data = await spotifyApi.refreshAccessToken();
 
-        return newToken.accessToken;
-      },
-      err => {
-        console.log('Could not refresh access token.', err);
-      }
-    );
+    newToken.accessToken = data.body.access_token;
+    newToken.expiresIn = data.body.expires_in * 1000 + Date.now();
+    newToken.save();
+
+    return data.body.access_token;
   } catch (err) {
-    console.log(err);
+    console.log('Could not refresh access token.', err);
   }
 
-  return {};
+  return null;
 };
 
 exports.getUserPlaylists = getUserPlaylists;

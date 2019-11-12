@@ -20,9 +20,16 @@ The hope is Spotify will eventually add a play count or last played to tracks in
 
 Requires NodeJS & NPM.
 
-Once installed, clone the repository and install its dependencies running:
+Once installed, clone the repository and install its dependencies running.
+
+Server:
 
     $ cd server
+    $ npm install
+
+Client:
+
+    $ cd client
     $ npm install
 
 ## Development
@@ -31,16 +38,14 @@ Go to [My Applications on Spotify Developer](https://developer.spotify.com/my-ap
 
 - http://localhost:5000/auth/spotify/callback
 
-Once you have your your application credentials, create `config/dev.js` with the following:
+Once you have your your application credentials, create `.env` with the following:
 
-```javascript
-module.exports = {
-  spotifyClientID: '<SPOTIFY_CLIENT_ID_GOES_HERE>',
-  spotifyClientSecret: '<SPOTIFY_CLIENT_SECRET_GOES_HERE>',
-  spotifyRedirectURI: '<SPOTIFY_REDIRECT_URI_GOES_HERE>',
-  mongoUri: '<MONGO_URI_GOES_HERE>',
-  cookieKey: '<COOKIE_KEY_GOES_HERE>'
-};
+```bash
+SPOTIFY_CLIENT_ID=<SPOTIFY_CLIENT_ID_GOES_HERE>
+SPOTIFY_CLIENT_SECRET=<SPOTIFY_CLIENT_SECRET_GOES_HERE>
+SPOTIFY_REDIRECT_URI=<SPOTIFY_REDIRECT_URI_GOES_HERE>
+MONGO_URI=<MONGO_URI_GOES_HERE>
+COOKIE_KEY=<COOKIE_KEY_GOES_HERE>
 ```
 
 Then run:
@@ -63,13 +68,6 @@ To build the client:
 
     $ cd client
     $ npm run build
-
-## Deployment
-
-To deploy Cachify:
-
-    $ cd deployment
-    $ bash deploy.sh
 
 ## Contributing
 
