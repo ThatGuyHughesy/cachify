@@ -6,6 +6,7 @@ const express = require('express');
 const passport = require('passport');
 const morgan = require('morgan');
 const path = require('path');
+const sslRedirect = require('heroku-ssl-redirect');
 
 const cookieKey = process.env.COOKIE_KEY;
 const serverIp = process.env.IP || 'localhost';
@@ -18,6 +19,7 @@ morgan('tiny');
 
 require('./models');
 
+app.use(sslRedirect());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(
