@@ -1,5 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
+require('dotenv').config();
+
 const SpotifyWebApi = require('spotify-web-api-node');
 const mongoose = require('mongoose');
 
@@ -9,7 +11,7 @@ const clientID = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const mongoUri = process.env.MONGO_URI;
 
-mongoose.connect(mongoUri, { useNewUrlParser: true });
+mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set('useCreateIndex', true);
 
 const User = require('../models/User');
@@ -89,4 +91,4 @@ const prunePlaylists = async () => {
   killJob();
 };
 
-exports.prunePlaylists = prunePlaylists;
+prunePlaylists();
