@@ -26,7 +26,7 @@ async function killJob() {
   process.exit();
 }
 
-async function prunePlaylists() {
+const prunePlaylists = async () => {
   try {
     console.log('__________________________________________________________');
     console.log(`Started playlist pruning at ${new Date().toUTCString()}`);
@@ -87,6 +87,6 @@ async function prunePlaylists() {
     killJob();
   }
   killJob();
-}
+};
 
-prunePlaylists();
+exports.prunePlaylists = prunePlaylists;
