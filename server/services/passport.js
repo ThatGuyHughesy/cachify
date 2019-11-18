@@ -5,7 +5,7 @@ const SpotifyStrategy = require('passport-spotify').Strategy;
 const User = require('../models/User');
 const Token = require('../models/Token');
 
-const clientID = process.env.SPOTIFY_CLIENT_ID;
+const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const callbackURL = process.env.SPOTIFY_REDIRECT_URI;
 
@@ -25,7 +25,7 @@ passport.deserializeUser((id, done) => {
 passport.use(
   new SpotifyStrategy(
     {
-      clientID,
+      clientId,
       clientSecret,
       callbackURL
     },
