@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 const spotify = require('../services/spotify');
 
-const clientID = process.env.SPOTIFY_CLIENT_ID;
+const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const mongoUri = process.env.MONGO_URI;
 
@@ -38,7 +38,7 @@ const prunePlaylists = async () => {
       console.log(`Pruning playlists for user ${user.spotifyId}`);
       const token = await Token.findOne({ spotifyId: user.spotifyId });
       const spotifyApi = new SpotifyWebApi({
-        clientID,
+        clientId,
         clientSecret
       });
 
