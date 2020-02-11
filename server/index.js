@@ -7,6 +7,7 @@ const passport = require('passport');
 const morgan = require('morgan');
 const path = require('path');
 const sslRedirect = require('heroku-ssl-redirect');
+const { errors } = require('celebrate');
 
 const cookieKey = process.env.COOKIE_KEY;
 const serverIp = process.env.IP || 'localhost';
@@ -22,6 +23,7 @@ require('./models');
 app.use(sslRedirect());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(errors());
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,

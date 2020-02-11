@@ -22,8 +22,7 @@ module.exports = {
           .then(newAccessToken => {
             spotifyApi.setAccessToken(newAccessToken);
           })
-          .catch(err => {
-            console.log(err);
+          .catch(() => {
             res.status(401).send({ error: 'Error refreshing Spotify API access token.' });
           });
       } else {

@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import * as actions from '../actions';
 
+import AlertDismissible from './AlertDismissible';
 import Header from './Header';
 import Track from './Track';
 
@@ -28,10 +29,16 @@ class Landing extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.tracks.length !== 0 && this.tracksInterval === 0) {
+    const { tracks } = newProps;
+
+    if (tracks.error) {
+      this.setState({ error: tracks.error });
+    }
+
+    if (Array.isArray(tracks) && tracks.length !== 0 && this.tracksInterval === 0) {
       this.setState(
         {
-          showTracks: newProps.tracks.slice(0, 3)
+          showTracks: tracks.slice(0, 3)
         },
         () => {
           this.newTrack();
@@ -66,6 +73,7 @@ class Landing extends Component {
 
   renderTracks() {
     const { showTracks } = this.state;
+
     if (showTracks.length !== 0) {
       return (
         <ListGroup id="tracks" className="tracks">
@@ -86,8 +94,32 @@ class Landing extends Component {
     return '';
   }
 
+  renderError() {
+    const { error } = this.props;
+
+    if (error) {
+      return (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '0',
+            right: '1rem',
+            minWidth: '300px'
+          }}
+        >
+          <AlertDismissible
+            variant="danger"
+            title={error}
+            message="Please refresh the page or try again later!"
+          />
+        </div>
+      );
+    }
+  }
+
   render() {
     const { auth } = this.props;
+
     return (
       <Container className="text-center">
         <Header auth={auth} route="/" />
@@ -103,6 +135,7 @@ class Landing extends Component {
           </a>
         </Col>
         <Col className="mt-5">{this.renderTracks()}</Col>
+        {this.renderError()}
       </Container>
     );
   }
@@ -117,16 +150,18 @@ Landing.propTypes = {
       image: PropTypes.string.isRequired
     })
   ),
-  fetchTracks: PropTypes.func.isRequired
+  fetchTracks: PropTypes.func.isRequired,
+  error: PropTypes.oneOfType([() => null, PropTypes.string.isRequired])
 };
 
 Landing.defaultProps = {
   auth: null,
+  error: null,
   tracks: []
 };
 
-function mapStateToProps({ auth, tracks }) {
-  return { auth, tracks };
+function mapStateToProps({ auth, tracks: { tracks, error } }) {
+  return { auth, tracks, error };
 }
 
 export default connect(
