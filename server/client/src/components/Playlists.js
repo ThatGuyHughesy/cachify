@@ -9,6 +9,8 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import _ from 'lodash';
 import * as actions from '../actions';
@@ -20,9 +22,8 @@ class Playlists extends Component {
   constructor(props) {
     super(props);
 
-    this.selectPlaylist = this.selectPlaylist.bind(this);
-    this.selectCacheSize = this.selectCacheSize.bind(this);
-    this.updateCacheSize = this.updateCacheSize.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
     this.updatePlaylist = this.updatePlaylist.bind(this);
     this.submitPlaylist = this.submitPlaylist.bind(this);
     this.removePlaylist = this.removePlaylist.bind(this);
@@ -32,8 +33,11 @@ class Playlists extends Component {
 
     this.state = {
       show: false,
-      update: { title: null, playlist: null, cacheSize: 10 },
-      create: { playlist: null, cacheSize: 10 }
+      createPlaylistId: null,
+      createCacheSize: 10,
+      updateTitle: null,
+      updatePlaylistId: null,
+      updateCacheSize: 10
     };
   }
 
@@ -52,26 +56,23 @@ class Playlists extends Component {
     this.setState({ show: true });
   }
 
-  selectPlaylist(event) {
-    const { create } = this.state;
-    create.playlist = event.value;
-    this.setState({ create });
+  handleChange(event) {
+    const {
+      target: { name, value, type }
+    } = event;
+
+    this.setState({ [name]: type === 'number' ? parseInt(value || 0) : value });
   }
 
-  selectCacheSize(event) {
-    const { create } = this.state;
-    create.cacheSize = event.value;
-    this.setState({ create });
+  handleSelect(event, actionMeta) {
+    const { name } = actionMeta;
+    const { value, type } = event;
+
+    this.setState({ [name]: type === 'number' ? parseInt(value) : value });
   }
 
-  updateCacheSize(event) {
-    const { update } = this.state;
-    update.cacheSize = event.value;
-    this.setState({ update });
-  }
-
-  showPlaylistModal(title, playlist, cacheSize) {
-    this.setState({ update: { title, playlist, cacheSize } });
+  showPlaylistModal(updateTitle, updatePlaylistId, updateCacheSize) {
+    this.setState({ updateTitle, updatePlaylistId, updateCacheSize });
     this.handleShow();
   }
 
@@ -90,14 +91,14 @@ class Playlists extends Component {
     event.preventDefault();
 
     const { updatePlaylist } = this.props;
-    const { update } = this.state;
+    const { updatePlaylistId, updateCacheSize } = this.state;
 
-    if (update.playlist && update.cacheSize) {
+    if (updatePlaylistId && updateCacheSize) {
       updatePlaylist({
-        playlistId: update.playlist,
-        cacheSize: update.cacheSize
+        playlistId: updatePlaylistId,
+        cacheSize: updateCacheSize
       }).then(() => {
-        this.setState({ update: { playlist: null, cacheSize: 10 } });
+        this.setState({ updatePlaylistId: null, updateCacheSize: 10 });
         this.handleClose();
       });
     }
@@ -106,15 +107,17 @@ class Playlists extends Component {
   submitPlaylist(event) {
     event.preventDefault();
 
-    const { createPlaylist } = this.props;
-    const { create } = this.state;
+    const { createPlaylist, fetchPlaylists, fetchSpotifyPlaylists } = this.props;
+    const { createPlaylistId, createCacheSize } = this.state;
 
-    if (create.playlist && create.cacheSize) {
+    if (createPlaylistId && createCacheSize) {
       createPlaylist({
-        playlistId: create.playlist,
-        cacheSize: create.cacheSize
+        playlistId: createPlaylistId,
+        cacheSize: createCacheSize
       }).then(() => {
-        this.setState({ create: { playlist: null, cacheSize: 10 } });
+        this.setState({ createPlaylistId: null, createCacheSize: 10 });
+        fetchPlaylists();
+        fetchSpotifyPlaylists();
       });
     }
   }
@@ -140,8 +143,8 @@ class Playlists extends Component {
   }
 
   render() {
-    const { auth, spotifyPlaylists, cacheSizeOptions } = this.props;
-    const { show, update, create } = this.state;
+    const { auth, spotifyPlaylists } = this.props;
+    const { show, createPlaylistId, createCacheSize, updateTitle, updateCacheSize } = this.state;
 
     if (auth === false) {
       return <Redirect to={{ pathname: '/' }} />;
@@ -156,10 +159,15 @@ class Playlists extends Component {
             <Form onSubmit={this.submitPlaylist}>
               <Form.Row>
                 <Col>
-                  <Form.Group className="mb-0">
+                  <Form.Group className="mb-sm-3 mb-md-0">
                     <Select
-                      value={spotifyPlaylists.find(option => option.value === create.playlist)}
-                      onChange={this.selectPlaylist}
+                      name="createPlaylistId"
+                      value={
+                        createPlaylistId === null
+                          ? null
+                          : spotifyPlaylists.find(option => option.value === createPlaylistId)
+                      }
+                      onChange={this.handleSelect}
                       options={spotifyPlaylists.map(playlist => ({
                         value: playlist.id,
                         label: (
@@ -173,16 +181,27 @@ class Playlists extends Component {
                           </div>
                         )
                       }))}
+                      required
                     />
                   </Form.Group>
                 </Col>
                 <Col md="3">
-                  <Form.Group className="mb-0">
-                    <Select
-                      value={cacheSizeOptions.find(option => option.value === create.cacheSize)}
-                      onChange={this.selectCacheSize}
-                      options={cacheSizeOptions}
-                    />
+                  <Form.Group className="mb-sm-3 mb-md-0">
+                    <InputGroup>
+                      <FormControl
+                        aria-label="Max number of tracks"
+                        type="number"
+                        min="1"
+                        max="500"
+                        name="createCacheSize"
+                        value={createCacheSize}
+                        onChange={this.handleChange}
+                        required
+                      />
+                      <InputGroup.Append>
+                        <InputGroup.Text>Max Tracks</InputGroup.Text>
+                      </InputGroup.Append>
+                    </InputGroup>
                   </Form.Group>
                 </Col>
                 <Col md="auto">
@@ -209,14 +228,23 @@ class Playlists extends Component {
           <Form onSubmit={this.updatePlaylist}>
             <Modal.Body>
               <Form.Group>
-                <h5>{update.title}</h5>
+                <h5>{updateTitle}</h5>
               </Form.Group>
               <Form.Group className="mb-0">
-                <Select
-                  value={cacheSizeOptions.find(option => option.value === update.cacheSize)}
-                  onChange={this.updateCacheSize}
-                  options={cacheSizeOptions}
-                />
+                <InputGroup>
+                  <FormControl
+                    aria-label="Max number of tracks"
+                    type="number"
+                    min="1"
+                    max="500"
+                    name="updateCacheSize"
+                    value={updateCacheSize}
+                    onChange={this.handleChange}
+                  />
+                  <InputGroup.Append>
+                    <InputGroup.Text>Max Tracks</InputGroup.Text>
+                  </InputGroup.Append>
+                </InputGroup>
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
@@ -255,25 +283,13 @@ Playlists.propTypes = {
       imageUrl: PropTypes.string.isRequired,
       tracks: PropTypes.number.isRequired
     })
-  ),
-  cacheSizeOptions: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.number.isRequired,
-      label: PropTypes.string.isRequired
-    })
   )
 };
 
 Playlists.defaultProps = {
   auth: null,
   playlists: [],
-  spotifyPlaylists: [],
-  cacheSizeOptions: [
-    { value: 10, label: '10 Tracks' },
-    { value: 25, label: '25 Tracks' },
-    { value: 50, label: '50 Tracks' },
-    { value: 100, label: '100 Tracks' }
-  ]
+  spotifyPlaylists: []
 };
 
 function mapStateToProps(state) {

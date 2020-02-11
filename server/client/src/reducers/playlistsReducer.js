@@ -2,7 +2,8 @@ import {
   FETCH_PLAYLISTS,
   CREATE_PLAYLIST,
   UPDATE_PLAYLIST,
-  REMOVE_PLAYLIST
+  REMOVE_PLAYLIST,
+  ERROR_PLAYLIST
 } from '../actions/types';
 
 export default function(state = [], action) {
@@ -17,6 +18,9 @@ export default function(state = [], action) {
       );
     case REMOVE_PLAYLIST:
       return state.filter(playlist => playlist.playlistId !== action.payload);
+    case ERROR_PLAYLIST:
+      console.log(action);
+      return { error: 'Error retrieving tracks.' };
     default:
       return state;
   }
